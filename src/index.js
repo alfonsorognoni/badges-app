@@ -13,7 +13,8 @@ import './global.css';
 
 // import Badge from './components/Badge'
 import BadgeNew from './pages/BadgeNew';
+import Badges from './pages/Badges';
 
 // ReactDOM.render(__qué__, __dónde__); siempre hay que darle un elemento
 const container = document.getElementById('app')
-ReactDOM.render( < BadgeNew / > , container);
+ReactDOM.render( < Badges / > , container);
