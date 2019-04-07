@@ -1,22 +1,28 @@
 import React from 'react';
-import './styles/BadgeNew.css';
-import header from '../images/platziconf-logo.svg';
-
+import api from '../api';
 import Badge from '../components/Badge';
 import BadgeForm from '../components/BadgeForm';
-
-import api from '../api';
+import PageLoading from '../components/PageLoading';
+import header from '../images/platziconf-logo.svg';
+import './styles/BadgeNew.css';
+import PageError from '../components/PageError';
 
 class BadgeNew extends React.Component {
-    state = {
-        form: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            jobTitle: '',
-            twitter: ''
-        }
+    constructor(props) {
+        super (props);
+        this.state = {
+            loading: false,
+            error: null,
+            form: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                jobTitle: '',
+                twitter: ''
+            }
+        };
     };
+
     handleChange = e => {
         // const nextForm = this.state.form;
         // nextForm[e.target.name] = e.target.value;
@@ -34,12 +40,25 @@ class BadgeNew extends React.Component {
         try {
             await api.badges.create(this.state.form);
             this.setState({ loading: false });
+
+            // redirect
+            this.props.history.push('/badges');
         } catch (error) {
             this.setState({ loading: false, error: error });
         }
     } 
 
     render() {
+        if (this.state.loading) {
+            return (
+                <PageLoading></PageLoading>
+            )
+        }
+        // if (this.state.error) {
+        //     return (
+        //         <PageError error={this.state.error.message}></PageError>
+        //     )
+        // }
         return (
             <React.Fragment>
                 <div className="BadgeNew__hero">
@@ -57,7 +76,12 @@ class BadgeNew extends React.Component {
                             />
                         </div>
                         <div className="col-6">
-                            <BadgeForm onSubmit={this.handleSubmit} onChange={this.handleChange} formValues={this.state.form}></BadgeForm>
+                            <BadgeForm 
+                                onSubmit={this.handleSubmit} 
+                                onChange={this.handleChange} 
+                                formValues={this.state.form}
+                                error={this.state.error}
+                            ></BadgeForm>
                         </div>
                     </div>
                 </div>
