@@ -9,6 +9,7 @@ import BadgesList from '../components/BadgesList';
 import api from '../api';
 import PageLoading from '../components/PageLoading';
 import PageError from '../components/PageError';
+import MiniLoader from '../components/MiniLoader';
 
 class Badges extends React.Component {
 
@@ -22,7 +23,7 @@ class Badges extends React.Component {
     }
 
     render() {
-        if (this.state.loading) {
+        if (this.state.loading && !this.state.data) {
             return <PageLoading></PageLoading>;
         }
 
@@ -49,6 +50,7 @@ class Badges extends React.Component {
                         <BadgesList badges={this.state.data}></BadgesList>
                     </div>
                 </div>
+                {this.state.loading && <MiniLoader></MiniLoader>}
             </div>
         </React.Fragment>
         );
@@ -56,20 +58,17 @@ class Badges extends React.Component {
 
     componentDidMount() {
         this.fetchData();
+
+        this.intervalId = setInterval(this.fetchData, 5000);
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // console.log('====== Did update =====');
-        // console.log({prevProps, prevState});
-        // console.log({
-        //     props: this.props,
-        //     state: this.state
-        // });
+
     }
     componentWillUnmount() {
         // clearTimeout(this.timeoutId);
         // console.log('cleared');
-        
+        clearInterval(this.intervalId);
     }
 
     fetchData = async () => {
