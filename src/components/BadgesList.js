@@ -1,13 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './styles/BadgesList.css';
+import Gravatar from './Gravatar';
 
 class BadgesList extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = { someKey: 'someValue' };
-//   }
-
     render() {
         if (this.props.badges.length === 0) {
             return (
@@ -23,7 +19,7 @@ class BadgesList extends React.Component {
                     return (
                     <li key={badge.id} className="BadgeListItem">
                         <div className="BadgeListItem__section-avatar">
-                            <img className="BadgeListItem__avatar" src={badge.avatarUrl} alt="avatar"></img>
+                            <Gravatar className="BadgeListItem__avatar" email={badge.email} alt="avatar"></Gravatar>
                         </div>
                         <div className="BadgeListItem__section-info">
                             <div className="BadgeListItem__name">{badge.firstName} {badge.lastName}</div>
