@@ -4,14 +4,14 @@ import Badge from '../components/Badge';
 import BadgeForm from '../components/BadgeForm';
 import PageLoading from '../components/PageLoading';
 import header from '../images/platziconf-logo.svg';
-import './styles/BadgeNew.css';
+import './styles/BadgeEdit.css';
 import PageError from '../components/PageError';
 
-class BadgeNew extends React.Component {
+class BadgeEdit extends React.Component {
     constructor(props) {
         super (props);
         this.state = {
-            loading: false,
+            loading: true,
             error: null,
             form: {
                 firstName: '',
@@ -38,7 +38,7 @@ class BadgeNew extends React.Component {
         e.preventDefault();
         this.setState({ loading: true, error: null });
         try {
-            await api.badges.create(this.state.form);
+            await api.badges.update(this.props.match.params.badgeId, this.state.form);
             this.setState({ loading: false });
 
             // redirect
@@ -61,8 +61,8 @@ class BadgeNew extends React.Component {
         // }
         return (
             <React.Fragment>
-                <div className="BadgeNew__hero">
-                    <img className="BadgeNew__hero-image img-fluid" src={header} alt="logo"></img>
+                <div className="BadgeEdit__hero">
+                    <img className="BadgeEdit__hero-image img-fluid" src={header} alt="logo"></img>
                 </div>
                 <div className="container">
                     <div className="row">
@@ -76,7 +76,7 @@ class BadgeNew extends React.Component {
                             />
                         </div>
                         <div className="col-6">
-                            <h1>NEW ATTENDANT</h1>
+                            <h1>EDIT ATTENDANT</h1>
                             <BadgeForm 
                                 onSubmit={this.handleSubmit} 
                                 onChange={this.handleChange} 
@@ -89,6 +89,21 @@ class BadgeNew extends React.Component {
             </React.Fragment>
         );
     }
+
+    fetchData = async () => {
+        this.setState({ loading: true, error: null});
+
+        try {
+            const response = await api.badges.read(this.props.match.params.badgeId);
+            this.setState({ loading: false, error: null, form: response});
+        } catch (error) {
+            this.setState({ loading: false, error: error});
+        }
+    }
+
+    componentDidMount (){
+        this.fetchData();
+    }
 }
 
-export default BadgeNew;
+export default BadgeEdit;

@@ -30,8 +30,7 @@ class BadgeForm extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>NEW ATTENDANT</h1>
+            <React.Fragment>
                 <form onSubmit={this.props.onSubmit}>
                     <div className="form-group">
                         <label>First Name</label>
@@ -56,7 +55,7 @@ class BadgeForm extends React.Component {
                     <button onClick={this.handleClick} className="btn btn-primary">Save</button>
                     {this.props.error && <p className="text-danger">{this.props.error.message}</p>}
                 </form>
-            </div>
+            </React.Fragment>
         );
     }
 }
