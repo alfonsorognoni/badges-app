@@ -22,11 +22,11 @@ class BadgeForm extends React.Component {
     //     })
     // }
 
-    handleClick = (e) => {
-        console.log('====================================');
-        console.log('button click');
-        console.log('====================================');
-    }
+    // handleClick = (e) => {
+    //     console.log('====================================');
+    //     console.log('button click');
+    //     console.log('====================================');
+    // }
 
     render() {
         return (
