@@ -11,7 +11,16 @@ class BadgeDetailsContainer extends React.Component {
             loading: true,
             data: undefined,
             error: null,
+            isOpenModal: false,
         }
+    }
+
+    onOpenModal = e => {
+        this.setState({ isOpenModal: true })
+    }
+
+    onCloseModal = e => {
+        this.setState({ isOpenModal: false })
     }
 
     render() {
@@ -24,7 +33,7 @@ class BadgeDetailsContainer extends React.Component {
         }
         
         return (
-            <BadgeDetails badge={this.state.data}></BadgeDetails>
+            <BadgeDetails isOpenModal={this.state.isOpenModal} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} badge={this.state.data}></BadgeDetails>
         );
     }
 
