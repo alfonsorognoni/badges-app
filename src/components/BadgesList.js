@@ -22,6 +22,9 @@ class BadgeListItem extends React.Component {
 
 function BadgesList (props) {
     const badges = props.badges;
+
+    const [query, setQuery] = React.useState('');
+
     if (badges.length === 0) {
         return (
             <div>
@@ -35,9 +38,9 @@ function BadgesList (props) {
         <div className="form-group">
             <label>Buscar</label>
             <input
-                value=""
+                value={query}
                 onChange={(e) => {
-                    console.log(e.target.value);
+                    setQuery(e.target.value);
                 }}
                 className="form-control" 
                 type="text" />
