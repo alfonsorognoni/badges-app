@@ -24,39 +24,61 @@ function BadgesList (props) {
     const badges = props.badges;
 
     const [query, setQuery] = React.useState('');
+    const [filterBadges, setFilterBadges] = React.useState(badges);
 
-    if (badges.length === 0) {
+    React.useMemo(() => {
+        const result = badges.filter( (badge) => {
+            return `${badge.firstName} ${badge.lastName}`
+                .toLowerCase()
+                .includes(query.toLowerCase());
+        });
+        setFilterBadges(result);
+    }, [query, badges])
+
+    if (filterBadges.length === 0) {
         return (
             <div>
+                <div className="form-group">
+                    <label>Buscar</label>
+                    <input
+                        className="form-control" 
+                        type="text"
+                        value={query}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                        }}
+                        />
+                </div>
                 <h3>No se encontró ningún badge</h3>
                 <Link to='badges/new' className="btn btn-primary">Crea tu badge</Link>
             </div>
         )
     }
     return (
-        <React.Fragment>
-        <div className="form-group">
-            <label>Buscar</label>
-            <input
-                value={query}
-                onChange={(e) => {
-                    setQuery(e.target.value);
-                }}
-                className="form-control" 
-                type="text" />
+        <div>
+            <div className="form-group">
+                <label>Buscar</label>
+                <input
+                    className="form-control" 
+                    type="text"
+                    value={query}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                    }}
+                    />
+            </div>
+            <ul className="list-unstyled">
+                {filterBadges.map((badge) => {
+                    return (
+                    <li key={badge.id} className="BadgeListItem">
+                        <Link className="text-reset text-decoration-none col d-flex" to={`/badges/${badge.id}`}>
+                            <BadgeListItem badge={badge}></BadgeListItem>
+                        </Link>
+                    </li>
+                    )
+                })}
+            </ul>
         </div>
-        <ul className="list-unstyled">
-            {badges.map((badge) => {
-                return (
-                <li key={badge.id} className="BadgeListItem">
-                    <Link className="text-reset text-decoration-none col d-flex" to={`/badges/${badge.id}`}>
-                        <BadgeListItem badge={badge}></BadgeListItem>
-                    </Link>
-                </li>
-                )
-            })}
-        </ul>
-        </React.Fragment>
     );
 }
 
