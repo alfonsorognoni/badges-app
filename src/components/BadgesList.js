@@ -20,9 +20,7 @@ class BadgeListItem extends React.Component {
     }
 }
 
-function BadgesList (props) {
-    const badges = props.badges;
-
+function useSearchBadges(badges) {
     const [query, setQuery] = React.useState('');
     const [filterBadges, setFilterBadges] = React.useState(badges);
 
@@ -34,6 +32,14 @@ function BadgesList (props) {
         });
         setFilterBadges(result);
     }, [query, badges])
+
+    return [query, setQuery, filterBadges];
+}
+
+function BadgesList (props) {
+    const badges = props.badges;
+
+    const [query, setQuery, filterBadges] = useSearchBadges(badges)
 
     if (filterBadges.length === 0) {
         return (
